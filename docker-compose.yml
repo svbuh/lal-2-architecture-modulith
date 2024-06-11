@@ -1,0 +1,43 @@
+version: '3.8'
+
+services:
+  h2server:
+    build: ./database
+    ports:
+      - "9090:9090"
+
+  harrypotterapi:
+    build: ./harry-potter-api
+    ports:
+      - "8081:8081"
+    depends_on:
+      - h2server
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:tcp://h2server:9090/mem:mydb
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
+
+  starwarsapi:
+    build: ./star-wars-api
+    ports:
+      - "8082:8082"
+    depends_on:
+      - h2server
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:h2:tcp://h2server:9090/mem:mydb
+      - SPRING_DATASOURCE_USERNAME=sa
+      - SPRING_DATASOURCE_PASSWORD=
+      - SPRING_JPA_HIBERNATE_DDL_AUTO=create
+      - SPRING_JPA_DATABASE_PLATFORM=org.hibernate.dialect.H2Dialect
+
+  summary:
+    build: ./summary
+    ports:
+      - "8080:8080"
+    depends_on:
+      - harrypotterapi
+      - starwarsapi
+    environment:
+      - SPRING_THYMELEAF_CACHE=false
