@@ -86,71 +86,10 @@ Repeat the above steps for the `starwars-api` and `summary-module` directories.
 
 You can also run the applications with the run configurations in your preferred IDE.
 
-### Configuration
-
-The application can be configured using the `application.properties` file located in the `src/main/resources` directory of each module. Here is an example configuration for the Harry Potter API:
-
-```properties
-server.port=8081
-spring.datasource.url=jdbc:h2:tcp://localhost:9090/mem:mydb
-spring.datasource.driverClassName=org.h2.Driver
-spring.datasource.username=sa
-spring.datasource.password=
-spring.jpa.hibernate.ddl-auto=create
-spring.jpa.database-platform=org.hibernate.dialect.H2Dialect
-spring.jpa.properties.hibernate.default_schema=harry_potter
-spring.h2.console.enabled=true
-spring.h2.console.path=/h2-console
-spring.h2.console.settings.trace=false
-```
 
 ### Docker Setup
 
 Each module contains a Dockerfile. The `docker-compose.yml` file in the main module is used to orchestrate the deployment of all modules.
-
-#### Example Dockerfile for HarryPotter API Module
-
-```dockerfile
-FROM openjdk:21-jdk-slim
-VOLUME /tmp
-COPY target/harry-potter-api-1.0-SNAPSHOT.jar app.jar
-ENTRYPOINT ["java","-jar","/app.jar"]
-```
-
-#### Example `docker-compose.yml`
-
-```yaml
-version: '3.8'
-services:
-  harrypotter-api:
-    build: ./harrypotter-api
-    ports:
-      - "8081:8081"
-    depends_on:
-      - database
-
-  starwars-api:
-    build: ./starwars-api
-    ports:
-      - "8082:8082"
-    depends_on:
-      - database
-
-  summary-module:
-    build: ./summary-module
-    ports:
-      - "8083:8083"
-    depends_on:
-      - harrypotter-api
-      - starwars-api
-
-  database:
-    image: h2:latest
-    ports:
-      - "9090:9090"
-    environment:
-      H2_OPTIONS: '-tcp -tcpAllowOthers'
-```
 
 ## Testing
 
