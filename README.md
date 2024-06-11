@@ -88,7 +88,7 @@ You can also run the applications with the run configurations in your preferred 
 
 ### Configuration
 
-The application can be configured using the `application.properties` file located in the `src/main/resources` directory of each module. Here is an example configuration for the H2 database:
+The application can be configured using the `application.properties` file located in the `src/main/resources` directory of each module. Here is an example configuration for the Harry Potter API:
 
 ```properties
 server.port=8081
